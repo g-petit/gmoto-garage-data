@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Garage Quick Reference</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔧</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --steel: #2c2c2e;
+    --iron: #3a3a3c;
+    --rust: #c0392b;
+    --amber: #f39c12;
+    --chalk: #e8e4dc;
+    --ghost: #b0a898;
+    --panel: #222224;
+    --card: #2a2a2c;
+    --groove: #1c1c1e;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--ink);
+    color: var(--chalk);
+    font-family: 'Barlow Condensed', sans-serif;
+    min-height: 100vh;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.015) 39px, rgba(255,255,255,0.015) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.015) 39px, rgba(255,255,255,0.015) 40px);
+  }
+
+  header {
+    background: var(--groove);
+    border-bottom: 3px solid var(--rust);
+    padding: 20px 28px 16px;
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+  }
+
+  header h1 {
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--chalk);
+  }
+
+  header .sub {
+    font-size: 0.85rem;
+    color: var(--ghost);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-family: 'Share Tech Mono', monospace;
+  }
+
+  .add-btn {
+    margin-left: auto;
+    background: var(--rust);
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .add-btn:hover { background: #e74c3c; }
+
+  .garage {
+    padding: 24px 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 20px;
+  }
+
+  /* ── Bike Card ── */
+  .bike-card {
+    background: var(--card);
+    border: 1px solid var(--iron);
+    border-top: 3px solid var(--rust);
+    position: relative;
+    animation: fadeUp 0.35s ease both;
+    cursor: grab;
+  }
+  .bike-card:active { cursor: grabbing; }
+  .bike-card.dragging {
+    opacity: 0.4;
+    border-top-color: var(--ghost);
+  }
+  .bike-card.drag-over {
+    border: 2px dashed var(--rust);
+    border-top: 3px solid var(--rust);
+    background: rgba(180,60,30,0.07);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .card-header {
+    background: var(--panel);
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--iron);
+  }
+
+  .bike-name {
+    font-size: 1.25rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: 1.1;
+  }
+
+  .bike-year {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--amber);
+    letter-spacing: 0.1em;
+    margin-top: 2px;
+  }
+
+  .card-actions {
+    display: flex;
+    gap: 6px;
+  }
+
+  .icon-btn {
+    background: none;
+    border: 1px solid var(--iron);
+    color: var(--ghost);
+    width: 28px; height: 28px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+  .icon-btn:hover { border-color: var(--chalk); color: var(--chalk); }
+  .icon-btn.danger:hover { border-color: var(--rust); color: var(--rust); }
+
+  .sections {
+    padding: 0;
+  }
+
+  .section {
+    border-bottom: 1px solid var(--groove);
+  }
+  .section:last-child { border-bottom: none; }
+
+  .section-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ghost);
+    padding: 8px 14px 4px;
+    font-family: 'Share Tech Mono', monospace;
+  }
+
+  .spec-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--groove);
+    margin: 0 14px 10px;
+  }
+
+  .spec-cell {
+    background: var(--panel);
+    padding: 8px 10px;
+  }
+
+  .spec-cell.full {
+    grid-column: 1 / -1;
+  }
+
+  .spec-key {
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ghost);
+    margin-bottom: 3px;
+    font-family: 'Share Tech Mono', monospace;
+  }
+
+  .spec-val {
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--chalk);
+  }
+
+  .spec-val.highlight {
+    color: var(--amber);
+    font-size: 1.2rem;
+  }
+
+  .spec-val.empty {
+    color: var(--iron);
+    font-size: 0.85rem;
+    font-weight: 400;
+    font-family: 'Share Tech Mono', monospace;
+  }
+
+  .note-tag {
+    display: inline-block;
+    font-size: 0.6rem;
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--amber);
+    border: 1px solid var(--amber);
+    padding: 1px 5px;
+    margin-left: 6px;
+    letter-spacing: 0.1em;
+    opacity: 0.7;
+    vertical-align: middle;
+  }
+
+  /* ── Empty Slot ── */
+  .empty-card {
+    background: var(--panel);
+    border: 2px dashed var(--iron);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    cursor: pointer;
+    transition: border-color 0.15s;
+    flex-direction: column;
+    gap: 8px;
+    color: var(--iron);
+  }
+  .empty-card:hover { border-color: var(--ghost); color: var(--ghost); }
+  .empty-card span { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; font-family: 'Share Tech Mono', monospace; }
+
+  /* ── Modal ── */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.85);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 100;
+    padding: 20px;
+  }
+
+  .modal {
+    background: var(--card);
+    border: 1px solid var(--iron);
+    border-top: 3px solid var(--rust);
+    width: 100%; max-width: 580px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .modal-head {
+    background: var(--panel);
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--iron);
+    position: sticky; top: 0; z-index: 1;
+  }
+
+  .modal-head h2 {
+    font-size: 1.1rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .modal-body { padding: 18px; }
+
+  .form-section {
+    margin-bottom: 20px;
+  }
+
+  .form-section-title {
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--amber);
+    font-family: 'Share Tech Mono', monospace;
+    margin-bottom: 10px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--iron);
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .form-row.single { grid-template-columns: 1fr; }
+
+  label {
+    display: block;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ghost);
+    font-family: 'Share Tech Mono', monospace;
+    margin-bottom: 4px;
+  }
+
+  input[type="text"], textarea, select {
+    width: 100%;
+    background: var(--groove);
+    border: 1px solid var(--iron);
+    color: var(--chalk);
+    padding: 8px 10px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  input[type="text"]:focus, textarea:focus, select:focus {
+    border-color: var(--amber);
+  }
+
+  select option { background: var(--groove); }
+
+  .modal-foot {
+    padding: 14px 18px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    border-top: 1px solid var(--iron);
+    background: var(--panel);
+    position: sticky; bottom: 0;
+  }
+
+  .btn {
+    padding: 9px 22px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-primary { background: var(--rust); color: white; }
+  .btn-primary:hover { background: #e74c3c; }
+  .btn-cancel { background: var(--iron); color: var(--ghost); }
+  .btn-cancel:hover { color: var(--chalk); }
+
+  .hidden { display: none; }
+
+  /* Slot counter */
+  .slot-bar {
+    padding: 8px 20px;
+    background: var(--groove);
+    border-bottom: 1px solid var(--iron);
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+  .slot-dot {
+    width: 12px; height: 12px;
+    border: 1px solid var(--iron);
+    background: var(--iron);
+    transition: background 0.2s;
+  }
+  .slot-dot.filled { background: var(--rust); border-color: var(--rust); }
+  .slot-label {
+    margin-left: 10px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--ghost);
+    letter-spacing: 0.1em;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>⬡ Garage Reference</h1>
+    <div class="sub">Pre-ride · Service · Quick Spec</div>
+  </div>
+  <div style="display:flex; gap:8px; margin-left:auto; align-items:center;">
+    <button class="add-btn" style="background:var(--iron); color:var(--ghost);" onclick="exportGarage()" title="Save garage data as JSON file">↓ Export</button>
+    <button class="add-btn" style="background:var(--iron); color:var(--ghost);" onclick="document.getElementById('importFile').click()" title="Load garage data from JSON file">↑ Import</button>
+    <input type="file" id="importFile" accept=".json" style="display:none" onchange="importGarage(event)">
+    <button class="add-btn" onclick="openModal()">+ Add Bike</button>
+  </div>
+</header>
+
+<div class="slot-bar" id="slotBar"></div>
+
+<div class="garage" id="garage"></div>
+
+<!-- Modal -->
+<div class="modal-overlay hidden" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="modalTitle">Add Bike</h2>
+      <button class="icon-btn" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+
+      <div class="form-section">
+        <div class="form-section-title">Identification</div>
+        <div class="form-row">
+          <div>
+            <label>Year</label>
+            <input type="text" id="f-year" placeholder="e.g. 2010">
+          </div>
+          <div>
+            <label>Make</label>
+            <input type="text" id="f-make" placeholder="e.g. Vespa">
+          </div>
+        </div>
+        <div class="form-row single">
+          <div>
+            <label>Model / Trim</label>
+            <input type="text" id="f-model" placeholder="e.g. GTS 300ie Super">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Tire Pressure (PSI)</div>
+        <div class="form-row">
+          <div>
+            <label>Front — Solo</label>
+            <input type="text" id="f-fp" placeholder="e.g. 26">
+          </div>
+          <div>
+            <label>Rear — Solo</label>
+            <input type="text" id="f-rp" placeholder="e.g. 29">
+          </div>
+        </div>
+        <div class="form-row">
+          <div>
+            <label>Front — 2-up</label>
+            <input type="text" id="f-fp2" placeholder="e.g. 26">
+          </div>
+          <div>
+            <label>Rear — 2-up</label>
+            <input type="text" id="f-rp2" placeholder="e.g. 32">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Tire Size</div>
+        <div class="form-row">
+          <div>
+            <label>Front Size</label>
+            <input type="text" id="f-fs" placeholder="e.g. 120/70-12">
+          </div>
+          <div>
+            <label>Rear Size</label>
+            <input type="text" id="f-rs" placeholder="e.g. 130/70-12">
+          </div>
+        </div>
+        <div class="form-row single">
+          <div>
+            <label>Tube Type</label>
+            <select id="f-tubetype">
+              <option value="">— select —</option>
+              <option value="Tubeless">Tubeless</option>
+              <option value="Tubed">Tubed</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Oil Service</div>
+        <div class="form-row single">
+          <div>
+            <label>Oil Type / Viscosity</label>
+            <input type="text" id="f-oil" placeholder="e.g. 5W-40 Full Synthetic">
+          </div>
+        </div>
+        <div class="form-row">
+          <div>
+            <label>Oil Filter P/N</label>
+            <input type="text" id="f-filter" placeholder="e.g. 82635R">
+          </div>
+          <div>
+            <label>Crush Washer / O-ring</label>
+            <input type="text" id="f-washer" placeholder="e.g. 174601">
+          </div>
+        </div>
+        <div class="form-row single">
+          <div>
+            <label>Oil Capacity</label>
+            <input type="text" id="f-oilcap" placeholder="e.g. 0.9L / 0.95 qt">
+          </div>
+        </div>
+        <div class="form-row single">
+          <div>
+            <label>Oil Preference</label>
+            <input type="text" id="f-oilpref" placeholder="e.g. Motul 7100 10W-40">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Spark Plug</div>
+        <div style="display:flex; gap:8px; margin-bottom:8px;">
+          <input type="text" id="f-sparkplug-input" placeholder="e.g. NGK CR8E / gap 0.7mm" style="flex:1" onkeydown="if(event.key==='Enter'){event.preventDefault();addListItem('sparkplug');}">
+          <button class="btn btn-cancel" style="white-space:nowrap" onclick="addListItem('sparkplug')">+ Add</button>
+        </div>
+        <ul id="f-sparkplug-list" style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:4px;"></ul>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Battery</div>
+        <div style="display:flex; gap:8px; margin-bottom:8px;">
+          <input type="text" id="f-battery-input" placeholder="e.g. YTZ14S / 12V 11.2Ah" style="flex:1" onkeydown="if(event.key==='Enter'){event.preventDefault();addListItem('battery');}">
+          <button class="btn btn-cancel" style="white-space:nowrap" onclick="addListItem('battery')">+ Add</button>
+        </div>
+        <ul id="f-battery-list" style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:4px;"></ul>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Maintenance</div>
+        <div style="display:flex; gap:8px; margin-bottom:8px;">
+          <input type="text" id="f-maint-input" placeholder="e.g. Chain lubed 2024-03" style="flex:1" onkeydown="if(event.key==='Enter'){event.preventDefault();addListItem('maint');}">
+          <button class="btn btn-cancel" style="white-space:nowrap" onclick="addListItem('maint')">+ Add</button>
+        </div>
+        <ul id="f-maint-list" style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:4px;"></ul>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Mods</div>
+        <div style="display:flex; gap:8px; margin-bottom:8px;">
+          <input type="text" id="f-mods-input" placeholder="e.g. Akrapovic exhaust" style="flex:1" onkeydown="if(event.key==='Enter'){event.preventDefault();addListItem('mods');}">
+          <button class="btn btn-cancel" style="white-space:nowrap" onclick="addListItem('mods')">+ Add</button>
+        </div>
+        <ul id="f-mods-list" style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:4px;"></ul>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Notes</div>
+        <div class="form-row single">
+          <textarea id="f-notes" rows="2" placeholder="Anything worth remembering..."></textarea>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveBike()">Save Bike</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const MAX_BIKES = 8;
+let bikes = [];
+let editIdx = null;
+
+const STORAGE_KEY = 'garage_bikes_v1';
+const GITHUB_JSON_URL = './garage-reference.json';
+
+function load() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) bikes = JSON.parse(raw);
+  } catch(e) { bikes = []; }
+}
+
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(bikes)); } catch(e) {}
+}
+
+function render() {
+  const garage = document.getElementById('garage');
+  garage.innerHTML = '';
+
+  if (bikes.length === 0) {
+    garage.innerHTML = `
+      <div style="grid-column:1/-1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:60px 20px; gap:16px; color:var(--ghost); text-align:center;">
+        <div style="font-size:3rem; opacity:0.2;">⬡</div>
+        <div style="font-family:'Share Tech Mono',monospace; font-size:0.8rem; letter-spacing:0.15em; text-transform:uppercase;">No garage data loaded</div>
+        <div style="font-family:'Share Tech Mono',monospace; font-size:0.7rem; color:var(--iron); max-width:320px; line-height:1.6;">Click <strong style="color:var(--ghost)">↑ Import</strong> to load your garage-reference.json file, or click <strong style="color:var(--ghost)">+ Add Bike</strong> to start fresh.</div>
+      </div>
+    `;
+    renderSlots();
+    return;
+  }
+
+  bikes.forEach((b, i) => {
+    const card = document.createElement('div');
+    card.className = 'bike-card';
+    card.style.animationDelay = (i * 0.05) + 's';
+    card.draggable = true;
+    card.dataset.index = i;
+
+    card.addEventListener('dragstart', e => {
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', i);
+      setTimeout(() => card.classList.add('dragging'), 0);
+    });
+    card.addEventListener('dragend', () => {
+      card.classList.remove('dragging');
+      document.querySelectorAll('.bike-card').forEach(c => c.classList.remove('drag-over'));
+    });
+    card.addEventListener('dragover', e => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      document.querySelectorAll('.bike-card').forEach(c => c.classList.remove('drag-over'));
+      card.classList.add('drag-over');
+    });
+    card.addEventListener('dragleave', () => {
+      card.classList.remove('drag-over');
+    });
+    card.addEventListener('drop', e => {
+      e.preventDefault();
+      card.classList.remove('drag-over');
+      const fromIndex = parseInt(e.dataTransfer.getData('text/plain'));
+      const toIndex = i;
+      if (fromIndex === toIndex) return;
+      const moved = bikes.splice(fromIndex, 1)[0];
+      bikes.splice(toIndex, 0, moved);
+      save();
+      render();
+    });
+
+    const fp  = b.fp  || null;
+    const rp  = b.rp  || null;
+    const fp2 = b.fp2 || null;
+    const rp2 = b.rp2 || null;
+
+    function val(v, cls='') {
+      if (!v) return `<div class="spec-val empty">—</div>`;
+      return `<div class="spec-val ${cls}">${v}</div>`;
+    }
+
+    card.innerHTML = `
+      <div class="card-header">
+        <div>
+          <div class="bike-name">${b.make || ''} ${b.model || ''}</div>
+          <div class="bike-year">${b.year || '—'}</div>
+        </div>
+        <div class="card-actions">
+          <button class="icon-btn" title="Edit" onclick="editBike(${i})">✎</button>
+          <button class="icon-btn danger" title="Remove" onclick="removeBike(${i})">✕</button>
+        </div>
+      </div>
+      <div class="sections">
+
+        <div class="section">
+          <div class="section-label">Tire Pressure — Solo (PSI)</div>
+          <div class="spec-grid" style="margin-bottom:0">
+            <div class="spec-cell">
+              <div class="spec-key">Front</div>
+              ${val(fp, 'highlight')}
+            </div>
+            <div class="spec-cell">
+              <div class="spec-key">Rear</div>
+              ${val(rp, 'highlight')}
+            </div>
+          </div>
+          ${(fp2 || rp2) ? `
+          <div class="section-label" style="padding-top:6px">2-Up</div>
+          <div class="spec-grid" style="margin-bottom:0">
+            <div class="spec-cell">
+              <div class="spec-key">Front</div>
+              ${val(fp2)}
+            </div>
+            <div class="spec-cell">
+              <div class="spec-key">Rear</div>
+              ${val(rp2)}
+            </div>
+          </div>` : ''}
+        </div>
+
+        <div class="section">
+          <div class="section-label">Tire Size</div>
+          <div class="spec-grid">
+            <div class="spec-cell">
+              <div class="spec-key">Front</div>
+              ${val(b.fs)}
+            </div>
+            <div class="spec-cell">
+              <div class="spec-key">Rear</div>
+              ${val(b.rs)}
+            </div>
+            ${b.tubetype ? `<div class="spec-cell full"><div class="spec-key">Tube Type</div>${val(b.tubetype)}</div>` : ''}
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-label">Oil Service</div>
+          <div class="spec-grid">
+            <div class="spec-cell full">
+              <div class="spec-key">Oil Type</div>
+              ${val(b.oil)}
+            </div>
+            <div class="spec-cell">
+              <div class="spec-key">Filter P/N</div>
+              ${val(b.filter)}
+            </div>
+            <div class="spec-cell">
+              <div class="spec-key">Crush Washer</div>
+              ${val(b.washer)}
+            </div>
+            ${b.oilcap ? `<div class="spec-cell full"><div class="spec-key">Capacity</div>${val(b.oilcap)}</div>` : ''}
+            ${b.oilpref ? `<div class="spec-cell full"><div class="spec-key">Oil Preference</div>${val(b.oilpref, 'highlight')}</div>` : ''}
+          </div>
+        </div>
+
+        ${b.sparkplug && b.sparkplug.length ? `
+        <div class="section">
+          <div class="section-label">Spark Plug</div>
+          <ul style="padding: 6px 14px 10px 28px; margin:0; display:flex; flex-direction:column; gap:3px;">
+            ${b.sparkplug.map(m => `<li style="font-family:'Share Tech Mono',monospace; font-size:0.78rem; color:var(--ghost); line-height:1.5">${linkify(m)}</li>`).join('')}
+          </ul>
+        </div>` : ''}
+
+        ${b.battery && b.battery.length ? `
+        <div class="section">
+          <div class="section-label">Battery</div>
+          <ul style="padding: 6px 14px 10px 28px; margin:0; display:flex; flex-direction:column; gap:3px;">
+            ${b.battery.map(m => `<li style="font-family:'Share Tech Mono',monospace; font-size:0.78rem; color:var(--ghost); line-height:1.5">${linkify(m)}</li>`).join('')}
+          </ul>
+        </div>` : ''}
+
+        ${b.maint && b.maint.length ? `
+        <div class="section">
+          <div class="section-label">Maintenance</div>
+          <ul style="padding: 6px 14px 10px 28px; margin:0; display:flex; flex-direction:column; gap:3px;">
+            ${b.maint.map(m => `<li style="font-family:'Share Tech Mono',monospace; font-size:0.78rem; color:var(--ghost); line-height:1.5">${linkify(m)}</li>`).join('')}
+          </ul>
+        </div>` : ''}
+
+        ${b.mods && b.mods.length ? `
+        <div class="section">
+          <div class="section-label">Mods</div>
+          <ul style="padding: 6px 14px 10px 28px; margin:0; display:flex; flex-direction:column; gap:3px;">
+            ${b.mods.map(m => `<li style="font-family:'Share Tech Mono',monospace; font-size:0.78rem; color:var(--ghost); line-height:1.5">${linkify(m)}</li>`).join('')}
+          </ul>
+        </div>` : ''}
+
+        ${b.notes ? `
+        <div class="section">
+          <div class="section-label">Notes</div>
+          <div style="padding: 8px 14px 10px; font-family:'Share Tech Mono',monospace; font-size:0.8rem; color:var(--ghost); line-height:1.5; white-space:pre-wrap;">${linkify(b.notes)}</div>
+        </div>` : ''}
+
+      </div>
+    `;
+    garage.appendChild(card);
+  });
+
+  // Fill remaining empty slots
+  const remaining = MAX_BIKES - bikes.length;
+  for (let i = 0; i < remaining; i++) {
+    const empty = document.createElement('div');
+    empty.className = 'empty-card';
+    empty.onclick = openModal;
+    empty.innerHTML = `<span style="font-size:1.8rem; opacity:0.3">+</span><span>Empty Slot</span>`;
+    garage.appendChild(empty);
+  }
+
+  renderSlots();
+}
+
+function renderSlots() {
+  const bar = document.getElementById('slotBar');
+  bar.innerHTML = '';
+  for (let i = 0; i < MAX_BIKES; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'slot-dot' + (i < bikes.length ? ' filled' : '');
+    bar.appendChild(dot);
+  }
+  const lbl = document.createElement('div');
+  lbl.className = 'slot-label';
+  lbl.textContent = `${bikes.length} / ${MAX_BIKES} bikes`;
+  bar.appendChild(lbl);
+}
+
+function openModal(e) {
+  editIdx = null;
+  clearForm();
+  document.getElementById('modalTitle').textContent = 'Add Bike';
+  document.getElementById('modalOverlay').classList.remove('hidden');
+}
+
+function editBike(i) {
+  editIdx = i;
+  const b = bikes[i];
+  document.getElementById('f-year').value  = b.year  || '';
+  document.getElementById('f-make').value  = b.make  || '';
+  document.getElementById('f-model').value = b.model || '';
+  document.getElementById('f-fp').value    = b.fp    || '';
+  document.getElementById('f-rp').value    = b.rp    || '';
+  document.getElementById('f-fp2').value   = b.fp2   || '';
+  document.getElementById('f-rp2').value   = b.rp2   || '';
+  document.getElementById('f-fs').value    = b.fs    || '';
+  document.getElementById('f-rs').value    = b.rs    || '';
+  document.getElementById('f-tubetype').value = b.tubetype || '';
+  document.getElementById('f-oil').value   = b.oil   || '';
+  document.getElementById('f-filter').value = b.filter || '';
+  document.getElementById('f-washer').value = b.washer || '';
+  document.getElementById('f-oilcap').value = b.oilcap || '';
+  document.getElementById('f-oilpref').value = b.oilpref || '';
+  document.getElementById('f-notes').value  = b.notes || '';
+  renderListItems('mods', b.mods || []);
+  renderListItems('sparkplug', b.sparkplug || []);
+  renderListItems('battery', b.battery || []);
+  renderListItems('maint', b.maint || []);
+  document.getElementById('modalTitle').textContent = 'Edit Bike';
+  document.getElementById('modalOverlay').classList.remove('hidden');
+}
+
+function removeBike(i) {
+  if (confirm('Remove this bike from the reference?')) {
+    bikes.splice(i, 1);
+    save();
+    render();
+  }
+}
+
+function clearForm() {
+  ['f-year','f-make','f-model','f-fp','f-rp','f-fp2','f-rp2',
+   'f-fs','f-rs','f-oil','f-filter','f-washer','f-oilcap','f-oilpref','f-notes']
+  .forEach(id => document.getElementById(id).value = '');
+  document.getElementById('f-tubetype').value = '';
+  renderListItems('sparkplug', []);
+  renderListItems('battery', []);
+  renderListItems('mods', []);
+  renderListItems('maint', []);
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.add('hidden');
+}
+
+function saveBike() {
+  const bike = {
+    year:   document.getElementById('f-year').value.trim(),
+    make:   document.getElementById('f-make').value.trim(),
+    model:  document.getElementById('f-model').value.trim(),
+    fp:     document.getElementById('f-fp').value.trim(),
+    rp:     document.getElementById('f-rp').value.trim(),
+    fp2:    document.getElementById('f-fp2').value.trim(),
+    rp2:    document.getElementById('f-rp2').value.trim(),
+    fs:     document.getElementById('f-fs').value.trim(),
+    rs:     document.getElementById('f-rs').value.trim(),
+    tubetype: document.getElementById('f-tubetype').value,
+    oil:    document.getElementById('f-oil').value.trim(),
+    filter: document.getElementById('f-filter').value.trim(),
+    washer: document.getElementById('f-washer').value.trim(),
+    oilcap: document.getElementById('f-oilcap').value.trim(),
+    oilpref: document.getElementById('f-oilpref').value.trim(),
+    notes:  document.getElementById('f-notes').value.trim(),
+    sparkplug: getListItems('sparkplug'),
+    battery: getListItems('battery'),
+    mods:   getListItems('mods'),
+    maint:  getListItems('maint'),
+  };
+
+  if (!bike.make && !bike.model) return;
+
+  if (editIdx !== null) {
+    bikes[editIdx] = bike;
+  } else {
+    if (bikes.length >= MAX_BIKES) return;
+    bikes.push(bike);
+  }
+
+  save();
+  closeModal();
+  render();
+}
+
+function linkify(text) {
+  return text.replace(/(https?:\/\/[^\s<>"']+)/g, '<a href="$1" target="_blank" rel="noopener" style="color:var(--amber); text-decoration:underline; text-underline-offset:2px;">$1</a>');
+}
+
+function renderListItems(key, items) {
+  const ul = document.getElementById('f-' + key + '-list');
+  ul.innerHTML = '';
+  items.forEach((item, idx) => {
+    const li = document.createElement('li');
+    li.style.cssText = 'display:flex; align-items:center; gap:8px; background:var(--groove); padding:5px 8px; border-radius:2px;';
+    li.innerHTML = `
+      <span style="flex:1; font-family:'Share Tech Mono',monospace; font-size:0.78rem; color:var(--ghost);">${linkify(item)}</span>
+      <button onclick="removeListItem('${key}', ${idx})" style="background:none; border:none; color:var(--rust); cursor:pointer; font-size:0.9rem; line-height:1; padding:0 2px;">✕</button>
+    `;
+    ul.appendChild(li);
+  });
+}
+
+function addListItem(key) {
+  const input = document.getElementById('f-' + key + '-input');
+  const val = input.value.trim();
+  if (!val) return;
+  const items = getListItems(key);
+  items.push(val);
+  renderListItems(key, items);
+  input.value = '';
+  input.focus();
+}
+
+function removeListItem(key, idx) {
+  const items = getListItems(key);
+  items.splice(idx, 1);
+  renderListItems(key, items);
+}
+
+function getListItems(key) {
+  const ul = document.getElementById('f-' + key + '-list');
+  return Array.from(ul.querySelectorAll('span')).map(s => s.textContent);
+}
+
+function exportGarage() {
+  const data = JSON.stringify({ version: 1, bikes: bikes }, null, 2);
+  const blob = new Blob([data], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'garage-reference.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importGarage(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const parsed = JSON.parse(e.target.result);
+      const imported = parsed.bikes || parsed;
+      if (!Array.isArray(imported)) throw new Error('bad');
+      if (confirm('Import ' + imported.length + ' bike(s)? This will replace your current garage data.')) {
+        bikes = imported;
+        save();
+        render();
+      }
+    } catch(err) {
+      alert('Could not read that file. Make sure it is a valid garage-reference.json export.');
+    }
+    event.target.value = '';
+  };
+  reader.readAsText(file);
+}
+
+// Load from localStorage first, then auto-fetch from GitHub if empty
+load();
+if (bikes.length === 0) {
+  fetch(GITHUB_JSON_URL)
+    .then(r => {
+      if (!r.ok) throw new Error('fetch failed');
+      return r.json();
+    })
+    .then(parsed => {
+      const imported = parsed.bikes || parsed;
+      if (Array.isArray(imported) && imported.length > 0) {
+        bikes = imported;
+        save();
+      }
+      render();
+    })
+    .catch(() => render());
+} else {
+  render();
+}
+</script>
+</body>
+</html>
