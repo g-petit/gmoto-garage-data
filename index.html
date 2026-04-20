@@ -512,6 +512,40 @@
       </div>
 
       <div class="form-section">
+        <div class="form-section-title">Torque Specs</div>
+        <div class="form-row">
+          <div>
+            <label>Upper Triple Clamp</label>
+            <input type="text" id="f-torque-upper_triple" placeholder="e.g. 15 Nm">
+          </div>
+          <div>
+            <label>Lower Triple Clamp</label>
+            <input type="text" id="f-torque-lower_triple" placeholder="e.g. 20 Nm">
+          </div>
+        </div>
+        <div class="form-row">
+          <div>
+            <label>Front Axle Nut</label>
+            <input type="text" id="f-torque-front_axle" placeholder="e.g. 25 Nm">
+          </div>
+          <div>
+            <label>Rear Axle Nut</label>
+            <input type="text" id="f-torque-rear_axle" placeholder="e.g. 90 Nm">
+          </div>
+        </div>
+        <div class="form-row">
+          <div>
+            <label>Fork Pinch Bolt</label>
+            <input type="text" id="f-torque-fork_pinch" placeholder="e.g. 10 Nm">
+          </div>
+          <div>
+            <label>Caliper Bolt</label>
+            <input type="text" id="f-torque-caliper" placeholder="e.g. 30 Nm">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
         <div class="form-section-title">Spark Plug</div>
         <div style="display:flex; gap:8px; margin-bottom:8px;">
           <input type="text" id="f-sparkplug-input" placeholder="e.g. NGK CR8E / gap 0.7mm" style="flex:1" onkeydown="if(event.key==='Enter'){event.preventDefault();addListItem('sparkplug');}">
@@ -718,6 +752,19 @@ function render() {
           </div>
         </div>
 
+        ${(b.torque && Object.values(b.torque).some(v => v)) ? `
+        <div class="section">
+          <div class="section-label">Torque Specs</div>
+          <div class="spec-grid">
+            ${b.torque.upper_triple ? `<div class="spec-cell"><div class="spec-key">Upper Triple Clamp</div>${val(b.torque.upper_triple)}</div>` : ''}
+            ${b.torque.lower_triple ? `<div class="spec-cell"><div class="spec-key">Lower Triple Clamp</div>${val(b.torque.lower_triple)}</div>` : ''}
+            ${b.torque.front_axle   ? `<div class="spec-cell"><div class="spec-key">Front Axle Nut</div>${val(b.torque.front_axle)}</div>` : ''}
+            ${b.torque.rear_axle    ? `<div class="spec-cell"><div class="spec-key">Rear Axle Nut</div>${val(b.torque.rear_axle)}</div>` : ''}
+            ${b.torque.fork_pinch   ? `<div class="spec-cell"><div class="spec-key">Fork Pinch Bolt</div>${val(b.torque.fork_pinch)}</div>` : ''}
+            ${b.torque.caliper      ? `<div class="spec-cell"><div class="spec-key">Caliper Bolt</div>${val(b.torque.caliper)}</div>` : ''}
+          </div>
+        </div>` : ''}
+
         ${b.sparkplug && b.sparkplug.length ? `
         <div class="section">
           <div class="section-label">Spark Plug</div>
@@ -814,6 +861,13 @@ function editBike(i) {
   document.getElementById('f-oilcap').value = b.oilcap || '';
   document.getElementById('f-oilpref').value = b.oilpref || '';
   document.getElementById('f-notes').value  = b.notes || '';
+  const t = b.torque || {};
+  document.getElementById('f-torque-upper_triple').value = t.upper_triple || '';
+  document.getElementById('f-torque-lower_triple').value = t.lower_triple || '';
+  document.getElementById('f-torque-front_axle').value   = t.front_axle   || '';
+  document.getElementById('f-torque-rear_axle').value    = t.rear_axle    || '';
+  document.getElementById('f-torque-fork_pinch').value   = t.fork_pinch   || '';
+  document.getElementById('f-torque-caliper').value      = t.caliper      || '';
   renderListItems('mods', b.mods || []);
   renderListItems('sparkplug', b.sparkplug || []);
   renderListItems('battery', b.battery || []);
@@ -835,6 +889,8 @@ function clearForm() {
    'f-fs','f-rs','f-oil','f-filter','f-washer','f-oilcap','f-oilpref','f-notes']
   .forEach(id => document.getElementById(id).value = '');
   document.getElementById('f-tubetype').value = '';
+  ['upper_triple','lower_triple','front_axle','rear_axle','fork_pinch','caliper']
+    .forEach(k => document.getElementById('f-torque-' + k).value = '');
   renderListItems('sparkplug', []);
   renderListItems('battery', []);
   renderListItems('mods', []);
@@ -863,6 +919,14 @@ function saveBike() {
     oilcap: document.getElementById('f-oilcap').value.trim(),
     oilpref: document.getElementById('f-oilpref').value.trim(),
     notes:  document.getElementById('f-notes').value.trim(),
+    torque: {
+      upper_triple: document.getElementById('f-torque-upper_triple').value.trim(),
+      lower_triple: document.getElementById('f-torque-lower_triple').value.trim(),
+      front_axle:   document.getElementById('f-torque-front_axle').value.trim(),
+      rear_axle:    document.getElementById('f-torque-rear_axle').value.trim(),
+      fork_pinch:   document.getElementById('f-torque-fork_pinch').value.trim(),
+      caliper:      document.getElementById('f-torque-caliper').value.trim(),
+    },
     sparkplug: getListItems('sparkplug'),
     battery: getListItems('battery'),
     mods:   getListItems('mods'),
@@ -956,26 +1020,21 @@ function importGarage(event) {
   reader.readAsText(file);
 }
 
-// Load from localStorage first, then auto-fetch from GitHub if empty
+// Render immediately from localStorage, then always fetch fresh JSON in background
 load();
-if (bikes.length === 0) {
-  fetch(GITHUB_JSON_URL)
-    .then(r => {
-      if (!r.ok) throw new Error('fetch failed');
-      return r.json();
-    })
-    .then(parsed => {
-      const imported = parsed.bikes || parsed;
-      if (Array.isArray(imported) && imported.length > 0) {
-        bikes = imported;
-        save();
-      }
+render();
+
+fetch(GITHUB_JSON_URL)
+  .then(r => r.ok ? r.json() : Promise.reject())
+  .then(parsed => {
+    const imported = parsed.bikes || parsed;
+    if (Array.isArray(imported) && imported.length > 0) {
+      bikes = imported;
+      save();
       render();
-    })
-    .catch(() => render());
-} else {
-  render();
-}
+    }
+  })
+  .catch(() => {});
 </script>
 </body>
 </html>
