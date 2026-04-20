@@ -18,6 +18,14 @@
       "oilcap": "~3.5L",
       "oilpref": "Motorex Power Synt 4T",
       "notes": "",
+      "torque": {
+        "upper_triple": "20 Nm",
+        "lower_triple": "12 Nm",
+        "front_axle": "45 Nm",
+        "rear_axle": "90 Nm",
+        "fork_pinch": "15 Nm",
+        "caliper": "45 Nm (Loctite 243)"
+      },
       "mods": [
         "quad lock",
         "adapt Givi luggage to Touratech rack"
@@ -53,6 +61,14 @@
       "battery": [
         "Yuasa YTZ14S"
       ],
+      "torque": {
+        "upper_triple": "40 Nm (Loctite 2701)",
+        "lower_triple": "19 Nm",
+        "front_axle": "30 Nm",
+        "rear_axle": "60 Nm",
+        "fork_pinch": "19 Nm",
+        "caliper": "38 Nm"
+      },
       "mods": [
         "bar risers",
         "install upper crash bars https://cdn.touratech-usa.com/09-045-5161-0_0.pdf"
@@ -81,6 +97,14 @@
       "notes": "Castrol Power1 Racing 4T or ENI i-Ride PG recommended.\nMichelin City Grip 2\n\n149104: https://www.scooterwest.com/wheel-bolt-with-allen-head-each-5-required-149104.html\n\n149104C01 (Chrome): https://www.scooterwest.com/chrome-wheel-bolts-modern-vespa-149104c01.html\n\nWave Washer 006968: https://www.scooterwest.com/wave-washer-200cc-006968.html",
       "sparkplug": [],
       "battery": [],
+      "torque": {
+        "upper_triple": "",
+        "lower_triple": "",
+        "front_axle": "74–88 Nm",
+        "rear_axle": "104–126 Nm",
+        "fork_pinch": "",
+        "caliper": ""
+      },
       "mods": [
         "phone holder"
       ],
@@ -102,7 +126,15 @@
       "filter": "Washable screen (no replaceable filter)",
       "washer": "M12 crush washer 94109-12000",
       "oilcap": "~0.6L",
-      "notes": "Maintenance items:\n-replace tires"
+      "notes": "Maintenance items:\n-replace tires",
+      "torque": {
+        "upper_triple": "",
+        "lower_triple": "",
+        "front_axle": "",
+        "rear_axle": "",
+        "fork_pinch": "",
+        "caliper": "N/A (drum brakes)"
+      }
     },
     {
       "year": "2019",
@@ -118,7 +150,15 @@
       "filter": "Washable screen (no replaceable filter)",
       "washer": "M12 crush washer 94109-12000",
       "oilcap": "~0.6L",
-      "notes": "Same specs as 2016 model. No traditional oil filter — uses a washable screen."
+      "notes": "Same specs as 2016 model. No traditional oil filter — uses a washable screen.",
+      "torque": {
+        "upper_triple": "",
+        "lower_triple": "",
+        "front_axle": "",
+        "rear_axle": "",
+        "fork_pinch": "",
+        "caliper": "N/A (drum brakes)"
+      }
     },
     {
       "year": "2017",
@@ -139,6 +179,14 @@
       "notes": "Off-road: air down to ~20 PSI for traction. Filter cover has gasket 15412-KYJ-901",
       "sparkplug": [],
       "battery": [],
+      "torque": {
+        "upper_triple": "20–26 Nm",
+        "lower_triple": "20–26 Nm",
+        "front_axle": "49–58 Nm",
+        "rear_axle": "64–73 Nm",
+        "fork_pinch": "20–26 Nm",
+        "caliper": "24–30 Nm (front) / 27–34 Nm (rear)"
+      },
       "mods": [
         "skid plate"
       ],
@@ -166,6 +214,14 @@
       "notes": "Off-road: reduce to 15–18 PSI for traction.\n\nhttps://fastway.zone/wp-content/uploads/manuals/Cargo%20Racks/PMB-01-1204.pdf\n\nhttps://static1.squarespace.com/static/5a56423aedaed85b8b4e90a2/t/637aa8c9b2204b2cbe7423ac/1668982987803/HEMISPHERE+OFFROAD+XR650L+SUBFRAME+SUPPORT+ASSEMBLY+PAGE+2.pdf\n\nhttps://static1.squarespace.com/static/5a56423aedaed85b8b4e90a2/t/637aa8fbcdd3d402650b152f/1668983035888/HEMISPHERE+OFFROAD+XR650L+SUBFRAME+SUPPORT+ASSEMBLY.pdf\n\nhttps://www.happy-trail.com/Instructions/HTP3-6-1.pdf\n\nhttps://fastway.zone/wp-content/uploads/manuals/Cargo%20Racks/PMB-01-1204.pdf\n\nhttps://static1.squarespace.com/static/5a56423aedaed85b8b4e90a2/t/637aa8c9b2204b2cbe7423ac/1668982987803/HEMISPHERE+OFFROAD+XR650L+SUBFRAME+SUPPORT+ASSEMBLY+PAGE+2.pdf\n\nhttps://static1.squarespace.com/static/5a56423aedaed85b8b4e90a2/t/637aa8fbcdd3d402650b152f/1668983035888/HEMISPHERE+OFFROAD+XR650L+SUBFRAME+SUPPORT+ASSEMBLY.pdf\n\nhttps://www.happy-trail.com/Instructions/HTP3-6-1.pdf\n\nTIRES: Dunlop D606 rear and Pirelli MT21 front",
       "sparkplug": [],
       "battery": [],
+      "torque": {
+        "upper_triple": "28 Nm",
+        "lower_triple": "33 Nm",
+        "front_axle": "87 Nm",
+        "rear_axle": "90 Nm",
+        "fork_pinch": "35 Nm",
+        "caliper": "31 Nm"
+      },
       "mods": [
         "Subframe support",
         "rear top rack",
