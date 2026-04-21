@@ -219,7 +219,7 @@
         "lower_triple": "33 Nm (24 ft-lbs)",
         "front_axle": "87 Nm (63 ft-lbs)",
         "rear_axle": "90 Nm (65 ft-lbs)",
-        "fork_pinch": "35 Nm (25 ft-lbs)",
+        "fork_pinch": "12 Nm (108 in-lbs)",
         "caliper": "31 Nm (22 ft-lbs)"
       },
       "mods": [
