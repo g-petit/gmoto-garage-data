@@ -17,6 +17,7 @@
       "washer": "Rubber O-ring gaskets — KTM kit 00050000068",
       "oilcap": "~3.5L",
       "oilpref": "Motorex Power Synt 4T",
+      "drain_torque": "20 Nm (15 ft-lbs) — 2 plugs",
       "notes": "",
       "torque": {
         "upper_triple": "20 Nm (15 ft-lbs)",
@@ -54,6 +55,7 @@
       "washer": "BMW 07 11 9 963 252 (M20 aluminum)",
       "oilcap": "~3.75L w/ filter",
       "oilpref": "Motorex Power Synt 4T or Shell Rotella T6",
+      "drain_torque": "42 Nm (31 ft-lbs)",
       "notes": "OIL: BMW 83 21 2 365 958 \nOIL FILTER: BMW 11 42 7 721 779 (71 mm, flats, spec)\nCRUSH WASHER: BMW 07 11 9 963 340 gasket ring",
       "sparkplug": [
         "LMAR8DJ"
@@ -94,6 +96,7 @@
       "washer": "174601 (O-ring)",
       "oilcap": "~0.9L",
       "oilpref": "",
+      "drain_torque": "24–30 Nm (18–22 ft-lbs)",
       "notes": "Castrol Power1 Racing 4T or ENI i-Ride PG recommended.\nMichelin City Grip 2\n\n149104: https://www.scooterwest.com/wheel-bolt-with-allen-head-each-5-required-149104.html\n\n149104C01 (Chrome): https://www.scooterwest.com/chrome-wheel-bolts-modern-vespa-149104c01.html\n\nWave Washer 006968: https://www.scooterwest.com/wave-washer-200cc-006968.html",
       "sparkplug": [],
       "battery": [],
@@ -126,6 +129,7 @@
       "filter": "Washable screen (no replaceable filter)",
       "washer": "M12 crush washer 94109-12000",
       "oilcap": "~0.6L",
+      "drain_torque": "25 Nm (18 ft-lbs)",
       "notes": "Maintenance items:\n-replace tires",
       "torque": {
         "upper_triple": "",
@@ -150,6 +154,7 @@
       "filter": "Washable screen (no replaceable filter)",
       "washer": "M12 crush washer 94109-12000",
       "oilcap": "~0.6L",
+      "drain_torque": "25 Nm (18 ft-lbs)",
       "notes": "Same specs as 2016 model. No traditional oil filter — uses a washable screen.",
       "torque": {
         "upper_triple": "",
@@ -176,6 +181,7 @@
       "washer": "M12 crush washer 94109-12000",
       "oilcap": "1.5L w/ filter",
       "oilpref": "",
+      "drain_torque": "25 Nm (18 ft-lbs)",
       "notes": "Off-road: air down to ~20 PSI for traction. Filter cover has gasket 15412-KYJ-901",
       "sparkplug": [],
       "battery": [],
@@ -211,6 +217,7 @@
       "washer": "M12 crush washer 94109-12000",
       "oilcap": "~2.0L w/ filter",
       "oilpref": "",
+      "drain_torque": "25 Nm (18 ft-lbs)",
       "notes": "Off-road: reduce to 15–18 PSI for traction.\n\nhttps://fastway.zone/wp-content/uploads/manuals/Cargo%20Racks/PMB-01-1204.pdf\n\nhttps://static1.squarespace.com/static/5a56423aedaed85b8b4e90a2/t/637aa8c9b2204b2cbe7423ac/1668982987803/HEMISPHERE+OFFROAD+XR650L+SUBFRAME+SUPPORT+ASSEMBLY+PAGE+2.pdf\n\nhttps://static1.squarespace.com/static/5a56423aedaed85b8b4e90a2/t/637aa8fbcdd3d402650b152f/1668983035888/HEMISPHERE+OFFROAD+XR650L+SUBFRAME+SUPPORT+ASSEMBLY.pdf\n\nhttps://www.happy-trail.com/Instructions/HTP3-6-1.pdf\n\nhttps://fastway.zone/wp-content/uploads/manuals/Cargo%20Racks/PMB-01-1204.pdf\n\nhttps://static1.squarespace.com/static/5a56423aedaed85b8b4e90a2/t/637aa8c9b2204b2cbe7423ac/1668982987803/HEMISPHERE+OFFROAD+XR650L+SUBFRAME+SUPPORT+ASSEMBLY+PAGE+2.pdf\n\nhttps://static1.squarespace.com/static/5a56423aedaed85b8b4e90a2/t/637aa8fbcdd3d402650b152f/1668983035888/HEMISPHERE+OFFROAD+XR650L+SUBFRAME+SUPPORT+ASSEMBLY.pdf\n\nhttps://www.happy-trail.com/Instructions/HTP3-6-1.pdf\n\nTIRES: Dunlop D606 rear and Pirelli MT21 front",
       "sparkplug": [],
       "battery": [],

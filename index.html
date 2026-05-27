@@ -499,6 +499,12 @@
         </div>
         <div class="form-row single">
           <div>
+            <label>Oil Drain Plug Torque</label>
+            <input type="text" id="f-drain_torque" placeholder="e.g. 25 Nm (18 ft-lbs)">
+          </div>
+        </div>
+        <div class="form-row single">
+          <div>
             <label>Oil Capacity</label>
             <input type="text" id="f-oilcap" placeholder="e.g. 0.9L / 0.95 qt">
           </div>
@@ -747,6 +753,7 @@ function render() {
               <div class="spec-key">Crush Washer</div>
               ${val(b.washer)}
             </div>
+            ${b.drain_torque ? `<div class="spec-cell full"><div class="spec-key">Drain Plug Torque</div>${val(b.drain_torque)}</div>` : ''}
             ${b.oilcap ? `<div class="spec-cell full"><div class="spec-key">Capacity</div>${val(b.oilcap)}</div>` : ''}
             ${b.oilpref ? `<div class="spec-cell full"><div class="spec-key">Oil Preference</div>${val(b.oilpref, 'highlight')}</div>` : ''}
           </div>
@@ -859,6 +866,7 @@ function editBike(i) {
   document.getElementById('f-filter').value = b.filter || '';
   document.getElementById('f-washer').value = b.washer || '';
   document.getElementById('f-oilcap').value = b.oilcap || '';
+  document.getElementById('f-drain_torque').value = b.drain_torque || '';
   document.getElementById('f-oilpref').value = b.oilpref || '';
   document.getElementById('f-notes').value  = b.notes || '';
   const t = b.torque || {};
@@ -886,7 +894,7 @@ function removeBike(i) {
 
 function clearForm() {
   ['f-year','f-make','f-model','f-fp','f-rp','f-fp2','f-rp2',
-   'f-fs','f-rs','f-oil','f-filter','f-washer','f-oilcap','f-oilpref','f-notes']
+   'f-fs','f-rs','f-oil','f-filter','f-washer','f-drain_torque','f-oilcap','f-oilpref','f-notes']
   .forEach(id => document.getElementById(id).value = '');
   document.getElementById('f-tubetype').value = '';
   ['upper_triple','lower_triple','front_axle','rear_axle','fork_pinch','caliper']
@@ -917,6 +925,7 @@ function saveBike() {
     filter: document.getElementById('f-filter').value.trim(),
     washer: document.getElementById('f-washer').value.trim(),
     oilcap: document.getElementById('f-oilcap').value.trim(),
+    drain_torque: document.getElementById('f-drain_torque').value.trim(),
     oilpref: document.getElementById('f-oilpref').value.trim(),
     notes:  document.getElementById('f-notes').value.trim(),
     torque: {
